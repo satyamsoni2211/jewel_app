@@ -12,14 +12,14 @@ const debug = true;
 module.exports = {
 	context: __dirname,
 	entry: {
-		App: './src/index.js'
+		App: './src/index.jsx'
 	},
 	// devtool: debug ? 'inline-eval-cheap-source-map' : 'source-map',
 	output: {
 		//where you want your compiled bundle to be stored
 		path: path.resolve('../static/assets/'),
 		//naming convention webpack should use for your files
-		filename: '[name].react-compiled[hash].js'
+		filename: '[name].react-compiled.js'
 
 	},
 	resolve: {
