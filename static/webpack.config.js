@@ -72,13 +72,6 @@ module.exports = {
 					},
 				],
 			},
-			// {
-			// 	test: /\.(jpe?g|png|gif|svg)$/i,
-			// 	loaders: [
-			// 		'file?hash=sha512&digest=hex&name=[hash].[ext]',
-			// 		'image-webpack?{progressive:true, optimizationLevel: 3, interlaced: false, pngquant:{quality: "30-40", speed: 1}}'
-			// 	]
-			// }{
 			{
 				test: /\.(gif|png|jpe?g|svg)$/i,
 				use: [
