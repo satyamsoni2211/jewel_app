@@ -8,21 +8,35 @@ import {
     Button,
     Modal,
     ModalBody,
-    ModalFooter,
-    FormText
+    ModalFooter
 } from 'reactstrap';
 import { Aux, imageHandler } from '../utilities/utilities.jsx';
+import $ from 'jquery';
 
 class Login extends Component {
     state = {
         modal: false,
         username: '',
+        usernameValid: false,
         email: '',
+        emailValid: false,
         password: '',
+        passwordValid: false,
         password1: '',
         pic: '',
         adress: '',
-        contact: ''
+        contact: '',
+        contactValid: false
+    }
+    validateForm = () => {
+        let {
+            username,
+            email,
+            password,
+            password1,
+            adress,
+            contact
+        } = this.state;
     }
     signUp = () => {
         let {
@@ -41,6 +55,23 @@ class Login extends Component {
         console.log(pic);
         console.log(adress);
         console.log(contact);
+    }
+    checkUserName = (username) => {
+        $.ajax({
+            url: '/accounts/checkUserName/',
+            type: 'POST',
+            data: {
+                username: username
+            },
+            success: (response) => {
+                if (response.username){
+                    this.setState({username: username, usernameValid: false});
+                }
+                else {
+                    this.setState({username: username,usernameValid: true});
+                }
+            }
+        });
     }
     render() {
         return (
@@ -80,8 +111,13 @@ class Login extends Component {
                                 <FormGroup>
                                     <Label for="Username">Username</Label>
                                     <Input type="text" name="username" id="Username" placeholder="Enter username"
+                                    invalid={this.state.usernameValid}
                                         value={this.state.username}
-                                        onChange={e => this.setState({ username: e.target.value })} />
+                                        onChange={e => this.checkUserName(e.target.value)} />{
+                                            !this.state.usernameValid && <span>
+                                                <i className="fas fa-check"></i> Valid Username
+                                                </span>
+                                        }
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="Email">Email</Label>
@@ -117,7 +153,7 @@ class Login extends Component {
                                 <FormGroup>
                                     <Label for="profilePic">Pic</Label>
                                     <Input type="file" name="pic" id="profilePic" placeholder="Select Profile Pic"
-                                        onChange={e => this.setState({ pic: imageHandler(e) })}
+                                        onChange={e => imageHandler(e, (data) => this.setState({pic: data}))}
                                     />
                                 </FormGroup>
                             </Form>
