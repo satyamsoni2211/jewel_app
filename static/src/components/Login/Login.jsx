@@ -11,11 +11,36 @@ import {
     ModalFooter,
     FormText
 } from 'reactstrap';
-import { Aux } from '../utilities/utilities.jsx';
+import { Aux, imageHandler } from '../utilities/utilities.jsx';
 
 class Login extends Component {
     state = {
-        modal: false
+        modal: false,
+        username: '',
+        email: '',
+        password: '',
+        password1: '',
+        pic: '',
+        adress: '',
+        contact: ''
+    }
+    signUp = () => {
+        let {
+            username,
+            email,
+            password,
+            password1,
+            pic,
+            adress,
+            contact
+        } = this.state;
+        console.log(username);
+        console.log(email);
+        console.log(password);
+        console.log(password1);
+        console.log(pic);
+        console.log(adress);
+        console.log(contact);
     }
     render() {
         return (
@@ -54,41 +79,56 @@ class Login extends Component {
                             <Form>
                                 <FormGroup>
                                     <Label for="Username">Username</Label>
-                                    <Input type="text" name="username" id="Username" placeholder="Enter username" />
+                                    <Input type="text" name="username" id="Username" placeholder="Enter username"
+                                        value={this.state.username}
+                                        onChange={e => this.setState({ username: e.target.value })} />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="Email">Email</Label>
-                                    <Input type="email" name="email" id="Email" placeholder="Enter Email" />
+                                    <Input type="email" name="email" id="Email" placeholder="Enter Email"
+                                        value={this.state.email}
+                                        onChange={e => this.setState({ email: e.target.value })} />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="Password">Password</Label>
-                                    <Input type="password" name="password" id="Password" placeholder="Enter Password" />
+                                    <Input type="password" name="password" id="Password" placeholder="Enter Password"
+                                        value={this.state.password}
+                                        onChange={e => this.setState({ password: e.target.value })} />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="confirmPassword">Confirm Password</Label>
-                                    <Input type="password" name="confirmpassword" id="confirmPassword" placeholder="Enter Password" />
+                                    <Input type="password" name="confirmpassword" id="confirmPassword" placeholder="Enter Password"
+                                        value={this.state.password1}
+                                        onChange={e => this.setState({ password1: e.target.value })}
+                                    />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="Contact">Contact</Label>
-                                    <Input type="text" name="contact" id="Contact" placeholder="Enter Phone number" />
+                                    <Input type="text" name="contact" id="Contact" placeholder="Enter Phone number"
+                                        value={this.state.contact}
+                                        onChange={e => this.setState({ contact: e.target.value })} />
                                 </FormGroup>
                                 <FormGroup>
-                                    <Label for="Adress">Confirm Password</Label>
-                                    <Input type="textarea" name="adress" id="Adress" placeholder="Enter Address" />
+                                    <Label for="Adress">Address</Label>
+                                    <Input type="textarea" name="adress" id="Adress" placeholder="Enter Address"
+                                        value={this.state.adress}
+                                        onChange={e => this.setState({ adress: e.target.value })} />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="profilePic">Pic</Label>
-                                    <Input type="file" name="pic" id="profilePic" placeholder="Select Profile Pic" />
+                                    <Input type="file" name="pic" id="profilePic" placeholder="Select Profile Pic"
+                                        onChange={e => this.setState({ pic: imageHandler(e) })}
+                                    />
                                 </FormGroup>
                             </Form>
                         </div>
                     </ModalBody>
                     <ModalFooter className='bg-dark text-light'>
-                        <Button className='btn btn-outline-light' onClick={this.toggle}>Do Something</Button>{' '}
+                        <Button className='btn btn-outline-light' onClick={this.signUp}>Signup</Button>{' '}
                         <Button className='btn btn-outline-light' onClick={() => this.setState({ modal: !this.state.modal })}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
-                
+
             </Aux>
         );
     }
