@@ -46,91 +46,39 @@ class Login extends Component {
                         </Form>
                     </div>
                 </div>
-                <Modal isOpen={this.state.modal}>
+                <Modal isOpen={this.state.modal} className='rounded'>
                     <ModalBody className='bg-dark text-light'>
                         <div className="col-md-12 p-4">
                             <h3 className='text-uppercase text-center'>Signup for Jewel app</h3>
                             <hr className='clear-both' />
                             <Form>
                                 <FormGroup>
-                                    <Label for="exampleEmail">Email</Label>
-                                    <Input type="email" name="email" id="exampleEmail" placeholder="with a placeholder" />
+                                    <Label for="Username">Username</Label>
+                                    <Input type="text" name="username" id="Username" placeholder="Enter username" />
                                 </FormGroup>
                                 <FormGroup>
-                                    <Label for="examplePassword">Password</Label>
-                                    <Input type="password" name="password" id="examplePassword" placeholder="password placeholder" />
+                                    <Label for="Email">Email</Label>
+                                    <Input type="email" name="email" id="Email" placeholder="Enter Email" />
                                 </FormGroup>
                                 <FormGroup>
-                                    <Label for="exampleUrl">Url</Label>
-                                    <Input type="url" name="url" id="exampleUrl" placeholder="url placeholder" />
+                                    <Label for="Password">Password</Label>
+                                    <Input type="password" name="password" id="Password" placeholder="Enter Password" />
                                 </FormGroup>
                                 <FormGroup>
-                                    <Label for="exampleNumber">Number</Label>
-                                    <Input type="number" name="number" id="exampleNumber" placeholder="number placeholder" />
+                                    <Label for="confirmPassword">Confirm Password</Label>
+                                    <Input type="password" name="confirmpassword" id="confirmPassword" placeholder="Enter Password" />
                                 </FormGroup>
                                 <FormGroup>
-                                    <Label for="exampleDatetime">Datetime</Label>
-                                    <Input type="datetime" name="datetime" id="exampleDatetime" placeholder="datetime placeholder" />
+                                    <Label for="Contact">Contact</Label>
+                                    <Input type="text" name="contact" id="Contact" placeholder="Enter Phone number" />
                                 </FormGroup>
                                 <FormGroup>
-                                    <Label for="exampleDate">Date</Label>
-                                    <Input type="date" name="date" id="exampleDate" placeholder="date placeholder" />
+                                    <Label for="Adress">Confirm Password</Label>
+                                    <Input type="textarea" name="adress" id="Adress" placeholder="Enter Address" />
                                 </FormGroup>
                                 <FormGroup>
-                                    <Label for="exampleTime">Time</Label>
-                                    <Input type="time" name="time" id="exampleTime" placeholder="time placeholder" />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="exampleColor">Color</Label>
-                                    <Input type="color" name="color" id="exampleColor" placeholder="color placeholder" />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="exampleSearch">Search</Label>
-                                    <Input type="search" name="search" id="exampleSearch" placeholder="search placeholder" />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="exampleSelect">Select</Label>
-                                    <Input type="select" name="select" id="exampleSelect">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </Input>
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="exampleSelectMulti">Select Multiple</Label>
-                                    <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </Input>
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="exampleText">Text Area</Label>
-                                    <Input type="textarea" name="text" id="exampleText" />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="exampleFile">File</Label>
-                                    <Input type="file" name="file" id="exampleFile" />
-                                    <FormText color="muted">
-                                        This is some placeholder block-level help text for the above input.
-                                        It's a bit lighter and easily wraps to a new line.
-                            </FormText>
-                                </FormGroup>
-                                <FormGroup check>
-                                    <Label check>
-                                        <Input type="radio" />{' '}
-                                        Option one is this and that—be sure to include why it's great
-                                </Label>
-                                </FormGroup>
-                                <FormGroup check>
-                                    <Label check>
-                                        <Input type="checkbox" />{' '}
-                                        Check me out
-                                </Label>
+                                    <Label for="profilePic">Pic</Label>
+                                    <Input type="file" name="pic" id="profilePic" placeholder="Select Profile Pic" />
                                 </FormGroup>
                             </Form>
                         </div>
@@ -140,6 +88,7 @@ class Login extends Component {
                         <Button className='btn btn-outline-light' onClick={() => this.setState({ modal: !this.state.modal })}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
+                
             </Aux>
         );
     }
