@@ -10,8 +10,9 @@ import {
     ModalBody,
     ModalFooter
 } from 'reactstrap';
-import { Aux, imageHandler } from '../utilities/utilities.jsx';
+import { Aux, imageHandler, notify } from '../utilities/utilities.jsx';
 import $ from 'jquery';
+import { ToastContainer } from 'react-toastify';
 
 class Login extends Component {
     state = {
@@ -46,10 +47,64 @@ class Login extends Component {
     }
     signUp = () => {
         // console.log(this.validateForm())
-        if (this.validateForm()){
+        let {
+            username,
+            password,
+            email,
+            contact,
+            adress,
+            pic
+        } = this.state;
+        let data = {
+            username,
+            password,
+            email,
+            contact,
+            adress,
+            pic
+        }
+        if (this.validateForm()) {
             console.log('signing up');
+            $.ajax({
+                url: '/accounts/signUp/',
+                data: data,
+                type: 'POST',
+                success: response => {
+                    console.log(response);
+                    notify(response.details, 'info');
+                    this.setState({ modal: false });
+                },
+                error: (xhr, status, error) => {
+                    console.log(error);
+                }
+            });
         }
     }
+    // login = () => {
+    //     let {
+    //         username,
+    //         password,
+    //         usernameInvalid,
+    //         passwordInvalid
+    //     } = this.state;
+    //     let data = {
+    //         username,
+    //         password
+    //     };
+    //     if (!usernameInvalid && !passwordInvalid) {
+    //         $.ajax({
+    //             url: '/accounts/login/',
+    //             data: data,
+    //             type: 'POST',
+    //             success: response => {
+    //                 console.log(response);
+    //             },
+    //             error: (xhr,status,error) => {
+    //                 console.log(error);
+    //             }
+    //         });
+    //     }
+    // }
     validate = (field, type = null) => {
         if (type != null) {
             switch (type) {
@@ -102,7 +157,7 @@ class Login extends Component {
                     }
                     break;
                 case 'password':
-                    if (/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@!%*#?&])[A-Za-z\d$@!%*#?&]{6,}$/g.test(field)) {
+                    if (/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@!%*#?&\.])[A-Za-z\d$@!%*#?&\.]{6,}$/g.test(field)) {
                         this.setState({
                             password: field, passwordInvalid: false,
                             passwordMessage: <span className='text-success'>
@@ -115,7 +170,7 @@ class Login extends Component {
                             password: field, passwordInvalid: true,
                             passwordMessage: <span>
                                 <i className="far fa-times-circle"></i>{' '}Password must be atleast 6 characters long
-                                and contain one letter, one number and once special character ($@!%*#?&)
+                                and contain one letter, one number and once special character ($@!%*#?&.)
                     </span>
                         });
                     }
@@ -162,19 +217,41 @@ class Login extends Component {
     render() {
         return (
             <Aux>
+                <ToastContainer />
                 <div className="row justify-content-center" style={{ height: '100vh' }}>
                     <div className="col-sm-4 p-5 m-5 bg-light align-self-center shadow rounded text-center">
                         <h2 className='text-uppercase'>login</h2>
                         <hr className='clear-both' />
-                        <Form>
+                        <Form action='/accounts/login/' method='POST'>
                             <FormGroup>
                                 <Label for="exampleEmail">Username</Label>
-                                <Input type='text' />
-                                <FormFeedback>You will not be able to see this</FormFeedback>
+                                <Input type='text' name='username'
+                                    value={this.state.username}
+                                    onChange={e => {
+                                        let username = e.target.value;
+                                        if (username != '') {
+                                            this.setState({ username, usernameInvalid: false });
+                                        } else {
+                                            this.setState({ usernameInvalid: true })
+                                        }
+                                    }}
+                                    invalid={this.state.usernameInvalid} />
+                                <FormFeedback>Please provide password</FormFeedback>
                             </FormGroup>
                             <FormGroup>
                                 <Label for="exampleEmail">Password</Label>
-                                <Input type='password' />
+                                <Input type='password' name='password'
+                                    value={this.state.password}
+                                    onChange={e => {
+                                        let password = e.target.value;
+                                        if (password != '') {
+                                            this.setState({ password, passwordInvalid: false });
+                                        } else {
+                                            this.setState({ passwordInvalid: true })
+                                        }
+                                    }}
+                                    invalid={this.state.passwordInvalid} />
+                                <FormFeedback>Please provide password</FormFeedback>
                             </FormGroup>
                             <div className='row'>
                                 <div className="col-md-6"></div>
@@ -184,7 +261,10 @@ class Login extends Component {
                                         onClick={() => { this.setState({ modal: !this.state.modal }) }}>Dont have account ? Signup</small>
                                 </div>
                             </div>
-                            <Button className='btn btn-outline-dark mt-3'>Submit</Button>
+                            {
+                                !this.state.usernameInvalid && !this.state.passwordInvalid && 
+                            <Button className='btn btn-outline-dark mt-3' type='submit'>Submit</Button>
+                            }
                         </Form>
                     </div>
                 </div>

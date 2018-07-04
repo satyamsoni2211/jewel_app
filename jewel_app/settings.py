@@ -146,3 +146,14 @@ import datetime
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'testvs2211@gmail.com'
+EMAIL_HOST_PASSWORD = 'Satyam.7697066634#'
+EMAIL_USE_TLS = True
+
+LOGIN_REDIRECT_URL = 'logged_in'
+LOGOUT_REDIRECT_URL = '/'

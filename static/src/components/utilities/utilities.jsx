@@ -1,3 +1,6 @@
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export const Aux = props => props.children;
 
 const VALID_IMAGE_EXTENSION = ['jpeg', 'jpg', 'png', 'gif'];
@@ -24,3 +27,13 @@ export const imageHandler = (event, save) => {
         return base64;
     }
 }
+
+export const notify= (msg,type) => toast[type](msg, {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    draggablePercent: 100
+});
