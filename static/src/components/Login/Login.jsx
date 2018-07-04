@@ -17,61 +17,147 @@ class Login extends Component {
     state = {
         modal: false,
         username: '',
-        usernameValid: false,
+        usernameInvalid: false,
         email: '',
-        emailValid: false,
+        emailInvalid: false,
         password: '',
-        passwordValid: false,
+        passwordInvalid: false,
+        passwordMessage: '',
         password1: '',
+        password1Invalid: false,
+        password1Message: '',
         pic: '',
         adress: '',
         contact: '',
-        contactValid: false
+        contactInvalid: false,
+        contactMessage: '',
+        usernameMessage: '',
+        emailMessage: '',
     }
     validateForm = () => {
         let {
-            username,
-            email,
-            password,
-            password1,
-            adress,
-            contact
+            usernameInvalid,
+            password1Invalid,
+            passwordInvalid,
+            emailInvalid,
+            contactInvalid
         } = this.state;
+        return !usernameInvalid && !password1Invalid && !passwordInvalid && !emailInvalid && !contactInvalid
     }
     signUp = () => {
-        let {
-            username,
-            email,
-            password,
-            password1,
-            pic,
-            adress,
-            contact
-        } = this.state;
-        console.log(username);
-        console.log(email);
-        console.log(password);
-        console.log(password1);
-        console.log(pic);
-        console.log(adress);
-        console.log(contact);
+        // console.log(this.validateForm())
+        if (this.validateForm()){
+            console.log('signing up');
+        }
     }
-    checkUserName = (username) => {
-        $.ajax({
-            url: '/accounts/checkUserName/',
-            type: 'POST',
-            data: {
-                username: username
-            },
-            success: (response) => {
-                if (response.username){
-                    this.setState({username: username, usernameValid: false});
-                }
-                else {
-                    this.setState({username: username,usernameValid: true});
-                }
+    validate = (field, type = null) => {
+        if (type != null) {
+            switch (type) {
+                case 'username':
+                    $.ajax({
+                        url: '/accounts/checkUserName/',
+                        type: 'POST',
+                        data: {
+                            username: field
+                        },
+                        success: (response) => {
+                            if (response.username && field.length > 5) {
+                                this.setState({ username: field, usernameInvalid: false });
+                            }
+                            else if (response.username && !(field.length > 5)) {
+                                this.setState({
+                                    username: field, usernameInvalid: true,
+                                    usernameMessage: <span>
+                                        <i className="far fa-times-circle"></i>{' '}Length Should be greater than 5 Characters
+                            </span>
+                                });
+                            }
+                            else if (!response.username) {
+                                this.setState({
+                                    username: field, usernameInvalid: true,
+                                    usernameMessage: <span>
+                                        <i className="far fa-times-circle"></i>{' '}Oh noes! that name is already taken
+                                </span>
+                                });
+                            }
+                        }
+                    });
+                    break;
+                case 'email':
+                    if (/\S+\@\S+(\.com|\.co\.\S{2,})$/g.test(field)) {
+                        this.setState({
+                            email: field, emailInvalid: false,
+                            emailMessage: <span className='text-success'>
+                                <span className='badge badge-success'><i className="fas fa-check"></i></span> Valid Email
+                    </span>
+                        });
+
+                    } else {
+                        this.setState({
+                            email: field, emailInvalid: true,
+                            emailMessage: <span>
+                                <i className="far fa-times-circle"></i>{' '}Please enter a valid email
+                        </span>
+                        });
+                    }
+                    break;
+                case 'password':
+                    if (/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@!%*#?&])[A-Za-z\d$@!%*#?&]{6,}$/g.test(field)) {
+                        this.setState({
+                            password: field, passwordInvalid: false,
+                            passwordMessage: <span className='text-success'>
+                                <span className='badge badge-success'><i className="fas fa-check"></i></span> Password Valid
+                                </span>
+                        });
+                    }
+                    else {
+                        this.setState({
+                            password: field, passwordInvalid: true,
+                            passwordMessage: <span>
+                                <i className="far fa-times-circle"></i>{' '}Password must be atleast 6 characters long
+                                and contain one letter, one number and once special character ($@!%*#?&)
+                    </span>
+                        });
+                    }
+                    break;
+                case 'password1':
+                    if (field == this.state.password) {
+                        this.setState({
+                            password1: field, password1Invalid: false,
+                            password1Message: <span className='text-success'>
+                                <span className='badge badge-success'><i className="fas fa-check"></i></span> Matched
+                                </span>
+                        });
+                    } else {
+                        this.setState({
+                            password1: field, password1Invalid: true,
+                            password1Message: <span>
+                                <i className="far fa-times-circle"></i>{' '}Password does not match
+                </span>
+                        });
+                    }
+                    break;
+                case 'contact':
+                    if (/^(\+\d{12}|\d{10})$/g.test(field)) {
+                        this.setState({
+                            contact: field, contactInvalid: false,
+                            contactMessage: <span className='text-success'>
+                                <span className='badge badge-success'><i className="fas fa-check"></i></span> Valid Contact
+                                </span>
+                        });
+                    } else {
+                        this.setState({
+                            contact: field, contactInvalid: true,
+                            contactMessage: <span>
+                                <i className="far fa-times-circle"></i>{' '}Invalid Contact can start with +91 and should contain 10 digits
+            </span>
+                        });
+                    }
+                    break;
+                default:
+                    return;
             }
-        });
+        }
     }
     render() {
         return (
@@ -103,7 +189,7 @@ class Login extends Component {
                     </div>
                 </div>
                 <Modal isOpen={this.state.modal} className='rounded'>
-                    <ModalBody className='bg-dark text-light'>
+                    <ModalBody className='bg-light text-info'>
                         <div className="col-md-12 p-4">
                             <h3 className='text-uppercase text-center'>Signup for Jewel app</h3>
                             <hr className='clear-both' />
@@ -111,38 +197,58 @@ class Login extends Component {
                                 <FormGroup>
                                     <Label for="Username">Username</Label>
                                     <Input type="text" name="username" id="Username" placeholder="Enter username"
-                                    invalid={this.state.usernameValid}
+                                        invalid={this.state.usernameInvalid}
                                         value={this.state.username}
-                                        onChange={e => this.checkUserName(e.target.value)} />{
-                                            !this.state.usernameValid && <span>
-                                                <i className="fas fa-check"></i> Valid Username
+                                        onChange={e => this.validate(e.target.value, 'username')} />{
+                                        !this.state.usernameInvalid && this.state.username != '' &&
+                                        <span className='text-success'>
+                                            <span className='badge badge-success'><i className="fas fa-check"></i></span> Valid Username
                                                 </span>
-                                        }
+                                    }
+                                    <FormFeedback>{this.state.usernameMessage}</FormFeedback>
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="Email">Email</Label>
                                     <Input type="email" name="email" id="Email" placeholder="Enter Email"
                                         value={this.state.email}
-                                        onChange={e => this.setState({ email: e.target.value })} />
+                                        onChange={e => this.validate(e.target.value, 'email')}
+                                        invalid={this.state.emailInvalid} />
+                                    {!this.state.emailInvalid && this.state.emailMessage}
+                                    <FormFeedback>{this.state.emailMessage}</FormFeedback>
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="Password">Password</Label>
                                     <Input type="password" name="password" id="Password" placeholder="Enter Password"
                                         value={this.state.password}
-                                        onChange={e => this.setState({ password: e.target.value })} />
+                                        invalid={this.state.passwordInvalid}
+                                        onChange={e => this.validate(e.target.value, 'password')} />
+                                    {
+                                        !this.state.passwordInvalid && this.state.passwordMessage
+                                    }
+                                    <FormFeedback>{this.state.passwordMessage}</FormFeedback>
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="confirmPassword">Confirm Password</Label>
                                     <Input type="password" name="confirmpassword" id="confirmPassword" placeholder="Enter Password"
                                         value={this.state.password1}
-                                        onChange={e => this.setState({ password1: e.target.value })}
+                                        onChange={e => this.validate(e.target.value, 'password1')}
+                                        invalid={this.state.password1Invalid}
                                     />
+                                    {
+                                        !this.state.password1Invalid && this.state.password1Message
+                                    }
+                                    <FormFeedback>{this.state.password1Message}</FormFeedback>
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="Contact">Contact</Label>
                                     <Input type="text" name="contact" id="Contact" placeholder="Enter Phone number"
                                         value={this.state.contact}
-                                        onChange={e => this.setState({ contact: e.target.value })} />
+                                        onChange={e => this.validate(e.target.value, 'contact')}
+                                        invalid={this.state.contactInvalid} />
+                                    {
+                                        !this.state.contactInvalid && this.state.contactMessage
+                                    }
+                                    <FormFeedback>{this.state.contactMessage}</FormFeedback>
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="Adress">Address</Label>
@@ -153,7 +259,7 @@ class Login extends Component {
                                 <FormGroup>
                                     <Label for="profilePic">Pic</Label>
                                     <Input type="file" name="pic" id="profilePic" placeholder="Select Profile Pic"
-                                        onChange={e => imageHandler(e, (data) => this.setState({pic: data}))}
+                                        onChange={e => imageHandler(e, (data) => this.setState({ pic: data }))}
                                     />
                                 </FormGroup>
                             </Form>

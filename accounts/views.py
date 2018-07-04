@@ -5,6 +5,7 @@ from django.shortcuts import render
 from .models import UserProfile
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import authenticate
 
 # Create your views here.
 
@@ -16,4 +17,4 @@ def checkUserName(request):
         if user.exists():
             return JsonResponse({'username':0})
         else:
-            return JsonResponse({'username':1})            
+            return JsonResponse({'username':1}) 
