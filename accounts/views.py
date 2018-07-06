@@ -43,10 +43,10 @@ def signUp(request):
         user.set_password(password)
         user.profilePic.save(filename, image, save=True)
         user.save()
-        welcome = 'Welcome to Jewel App'
-        msg = EmailMultiAlternatives(welcome, welcome, 'developers@jewel_app.com', [
-                                     request.POST.get('email'), ])
-        msg.send()
+        # welcome = 'Welcome to Jewel App'
+        # msg = EmailMultiAlternatives(welcome, welcome, 'developers@jewel_app.com', [
+        #                              request.POST.get('email'), ])
+        # msg.send()
         return JsonResponse({'details': 'User created successfully'})
 
 
