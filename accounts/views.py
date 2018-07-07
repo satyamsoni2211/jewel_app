@@ -49,8 +49,6 @@ def signUp(request):
         template = get_template('welcome.html')
         context = Context({'username': username, 'password': password})
         content = template.render({'username': username, 'password': password})
-        # msg = EmailMessage(subject, content, from, to=[user.email,])
-        # msg.send()
         welcome = 'Welcome to Jewel App'
         msg = EmailMultiAlternatives(welcome, 'welcome', 'developers@jewel-app.tk', [
                                      request.POST.get('email'), ])
@@ -76,9 +74,3 @@ def Login(request):
         else:
             messages.error(request,'Invalid username or password')
             return  redirect('home')
-        # if user is not None:
-        #     print 'Logged in successfully'
-        #     login(request, user)
-        #     return redirect(settings.LOGIN_REDIRECT_URL)
-        # else:
-        #     return JsonResponse({'details':'Invalid username/password'})
