@@ -13,6 +13,8 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 from  django.urls import reverse_lazy,reverse
 from django.contrib import messages
+from django.template import Context
+from django.template.loader import get_template
 
 # Create your views here.
 
@@ -37,16 +39,23 @@ def signUp(request):
             'contact': request.POST.get('contact'),
             'adress': request.POST.get('adress')
         }
+        username = request.POST.get('username')
         password = request.POST.get('password')
         image, filename = getImage(request.POST.get('pic'))
         user = UserProfile(**data)
         user.set_password(password)
         user.profilePic.save(filename, image, save=True)
         user.save()
-        # welcome = 'Welcome to Jewel App'
-        # msg = EmailMultiAlternatives(welcome, welcome, 'developers@jewel_app.com', [
-        #                              request.POST.get('email'), ])
+        template = get_template('welcome.html')
+        context = Context({'username': username, 'password': password})
+        content = template.render({'username': username, 'password': password})
+        # msg = EmailMessage(subject, content, from, to=[user.email,])
         # msg.send()
+        welcome = 'Welcome to Jewel App'
+        msg = EmailMultiAlternatives(welcome, 'welcome', 'developers@jewel-app.tk', [
+                                     request.POST.get('email'), ])
+        msg.attach_alternative(content, "text/html")
+        msg.send()
         return JsonResponse({'details': 'User created successfully'})
 
 

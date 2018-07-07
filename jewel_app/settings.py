@@ -150,10 +150,15 @@ JWT_AUTH = {
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+# EMAIL_HOST = 'smtp.pepipost.com'
+# EMAIL_PORT = 25
+# EMAIL_HOST_USER = 'satyamsoni2211'
+# EMAIL_HOST_PASSWORD = 'Meena.130693#'
+# EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'testvs2211@gmail.com'
-EMAIL_HOST_PASSWORD = 'Satyam.7697066634#'
+EMAIL_HOST_PASSWORD = 'ctfmxqijijgsrvdm'
 EMAIL_USE_TLS = True
 
 LOGIN_REDIRECT_URL = 'logged_in'

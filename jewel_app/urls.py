@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib import admin
 from django.views.generic import TemplateView
+from django.contrib.staticfiles.urls import static,staticfiles_urlpatterns
+from django.conf import settings
 
 
 urlpatterns = [
@@ -23,4 +25,7 @@ urlpatterns = [
     url(r'^$',TemplateView.as_view(template_name='index.html'),name='home'),
     url(r'^accounts/',include('accounts.urls',namespace='accounts')),
     url(r'^logged_in/$',TemplateView.as_view(template_name='page1.html'),name='logged_in'),
+    url(r'^welcome/$',TemplateView.as_view(template_name='welcome.html'),name='welcome'),
 ]
+urlpatterns += staticfiles_urlpatterns()
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
