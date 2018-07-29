@@ -15,6 +15,7 @@ from  django.urls import reverse_lazy,reverse
 from django.contrib import messages
 from django.template import Context
 from django.template.loader import get_template
+import jwt
 
 # Create your views here.
 
@@ -70,7 +71,12 @@ def Login(request):
             if user.is_active:
                 login(request, user)
                 # Redirect to index page.
-                return redirect(settings.LOGIN_REDIRECT_URL)
+                resp = redirect(settings.LOGIN_REDIRECT_URL)
+                payload = {'user':user.username}
+                token =  jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+                print token
+                resp.set_cookie('token',token)
+                return resp
         else:
             messages.error(request,'Invalid username or password')
             return  redirect('home')
